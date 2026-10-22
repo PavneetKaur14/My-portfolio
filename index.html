@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<!--
+DESIGN CONCEPT: "The Candidate Analysis Report"
+Pavneet is a fresher / ML intern whose flagship project, HealthLens Pro, reads medical reports and extracts biomarkers.
+So this portfolio IS a diagnostic lab report, written about her by her own kind of system:
+- Hero: a "specimen" (her summary) is scanned by a sweeping laser; recognised skills light up and are extracted as markers.
+- Skills become a "biomarker panel" with DETECTED / BASIC flags and filters (levels come only from the resume).
+- Projects are "findings" shown as interactive pipelines (HealthLens Pro: report -> prediction; Voice Assistant: listen -> speak).
+- Signature interaction: a command bar, typed or spoken (Web Speech API), a nod to her Futuristic Voice Assistant.
+  Say or type "projects", "skills", "contact", "help".
+- Type: Instrument Serif (report headline) + Hanken Grotesk (body) + JetBrains Mono (lab data labels).
+- Fresher layout: leads with projects and skills, then history, education, referral (contact). Paper-and-ink palette, dark "scan" mode.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pavneet Kaur — AI & Machine Learning · Candidate Analysis Report</title>
+<meta name="description" content="Portfolio of Pavneet Kaur, Computer Science student focused on AI and Machine Learning, presented as a diagnostic analysis report.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f4f1ea; --paper-2:#ebe7dc; --card:#faf8f3;
+  --ink:#15201d; --muted:#556059; --line:#cdc7b8;
+  --accent:#0b7a64; --accent-ink:#ffffff; --accent-soft:#d5ebe3;
+  --flag:#b93a24; --hi:#fff0a6;
+  --scan:#0b7a64;
+  --radius:14px;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --serif:'Instrument Serif',Georgia,'Times New Roman',serif;
+  --sans:'Hanken Grotesk',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+:root[data-theme="dark"]{
+  --paper:#0e1513; --paper-2:#141d1a; --card:#121a17;
+  --ink:#e8f0ea; --muted:#9db0a6; --line:#2a3b35;
+  --accent:#4fd1b0; --accent-ink:#06130f; --accent-soft:#12302a;
+  --flag:#ff8a6b; --hi:#3b3a12;
+  --scan:#4fd1b0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{
+  font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.6;font-size:17px;
+  background-image:
+    linear-gradient(var(--line) 1px,transparent 1px),
+    linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:48px 48px;background-position:-1px -1px;
+  background-blend-mode:normal;
+  padding-bottom:96px;
+}
+body::before{content:"";position:fixed;inset:0;background:var(--paper);opacity:.9;z-index:-1}
+a{color:inherit}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px}
+.skip{position:absolute;left:12px;top:-60px;background:var(--accent);color:var(--accent-ink);padding:10px 14px;border-radius:8px;z-index:100;font-weight:600;text-decoration:none}
+.skip:focus{top:12px}
+.mono{font-family:var(--mono)}
+.label{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+/* ---------- shell ---------- */
+.shell{display:grid;grid-template-columns:230px minmax(0,1fr);max-width:1260px;margin:0 auto}
+.rail{position:sticky;top:0;align-self:start;height:100vh;padding:28px 20px;display:flex;flex-direction:column;gap:26px;border-right:1px solid var(--line);background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(6px)}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand b{display:grid;place-items:center;width:42px;height:42px;border:2px solid var(--ink);border-radius:10px;font-family:var(--mono);font-size:.95rem}
+.brand span{font-family:var(--mono);font-size:.7rem;line-height:1.3;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.rail nav ol{list-style:none;display:flex;flex-direction:column;gap:4px}
+.rail nav a{display:flex;gap:12px;align-items:baseline;padding:8px 10px;border-radius:8px;text-decoration:none;font-size:.95rem;color:var(--muted);border-left:3px solid transparent;transition:background .2s,color .2s}
+.rail nav a i{font-style:normal;font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.rail nav a:hover{background:var(--paper-2);color:var(--ink)}
+.rail nav a[aria-current="true"]{color:var(--ink);background:var(--accent-soft);border-left-color:var(--accent);font-weight:600}
+.rail-foot{margin-top:auto;display:flex;flex-direction:column;gap:10px}
+.btn-ghost{font:inherit;font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:9px 14px;cursor:pointer;transition:border-color .2s,background .2s}
+.btn-ghost:hover{border-color:var(--ink);background:var(--paper-2)}
+
+main{padding:28px clamp(18px,4vw,56px) 40px;min-width:0}
+section{padding:56px 0 8px;scroll-margin-top:16px}
+.sec-head{display:flex;align-items:baseline;gap:14px;border-bottom:2px solid var(--ink);padding-bottom:10px;margin-bottom:26px;flex-wrap:wrap}
+.sec-head .code{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:700;letter-spacing:.08em}
+.sec-head h2{font-family:var(--serif);font-weight:400;font-size:clamp(2rem,4.2vw,3rem);line-height:1.05;letter-spacing:-.01em}
+.sec-head .label{margin-left:auto}
+h2:focus{outline:none}
+
+/* ---------- hero ---------- */
+.hero{padding-top:6px}
+.meta-strip{display:flex;flex-wrap:wrap;gap:8px 28px;border-top:2px solid var(--ink);border-bottom:1px solid var(--line);padding:10px 0;margin-bottom:34px}
+.meta-strip div{display:flex;gap:8px;align-items:baseline}
+.meta-strip strong{font-family:var(--mono);font-size:.78rem;font-weight:500}
+.hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(3.4rem,10vw,7.6rem);line-height:.9;letter-spacing:-.025em}
+.hero h1 em{font-style:italic;color:var(--accent)}
+.hero .tagline{font-size:clamp(1.15rem,2.2vw,1.5rem);max-width:30ch;margin-top:22px;line-height:1.35;font-weight:500}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:26px;margin-top:40px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;position:relative;overflow:hidden}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.panel-head button{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;background:var(--ink);color:var(--paper);border:0;border-radius:999px;padding:7px 12px;cursor:pointer}
+.specimen{position:relative}
+#scan-text{font-size:1.02rem;line-height:1.85;position:relative}
+#scan-text p+p{margin-top:12px}
+#scan-text mark{background:transparent;color:inherit;border-radius:4px;padding:1px 2px;box-shadow:inset 0 -2px 0 transparent;transition:background .3s,box-shadow .3s}
+#scan-text mark.hit{background:var(--hi);box-shadow:inset 0 -2px 0 var(--accent);font-weight:600}
+.scanner{position:absolute;left:-8px;right:-8px;top:0;height:3px;background:var(--scan);box-shadow:0 0 18px 4px var(--scan);opacity:0;pointer-events:none;border-radius:2px}
+.scanner.on{opacity:.9}
+.extract ul{list-style:none;display:flex;flex-wrap:wrap;gap:8px;min-height:120px;align-content:flex-start}
+.extract li{font-family:var(--mono);font-size:.78rem;padding:6px 10px;border:1px solid var(--accent);color:var(--ink);background:var(--accent-soft);border-radius:999px;animation:pop .35s ease both}
+.extract li::before{content:"◉ ";color:var(--accent)}
+.extract .empty{font-family:var(--mono);font-size:.78rem;color:var(--muted)}
+.scan-status{font-family:var(--mono);font-size:.72rem;color:var(--muted);margin-top:14px;letter-spacing:.06em}
+@keyframes pop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
+
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:26px;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--card)}
+.stat{padding:20px 18px;border-right:1px solid var(--line)}
+.stat:last-child{border-right:0}
+.stat b{display:block;font-family:var(--serif);font-weight:400;font-size:clamp(2.4rem,5vw,3.6rem);line-height:1}
+.stat span{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+
+.impression{margin-top:26px;border-left:4px solid var(--flag);background:var(--card);padding:20px 22px;border-radius:0 var(--radius) var(--radius) 0;border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.impression .label{color:var(--flag);font-weight:700}
+.impression p{font-family:var(--serif);font-size:clamp(1.3rem,2.4vw,1.75rem);line-height:1.3;margin-top:8px}
+.impression p small{display:block;font-family:var(--mono);font-size:.78rem;margin-top:12px;color:var(--muted);letter-spacing:.04em}
+
+/* ---------- projects ---------- */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.tabs [role="tab"]{font:inherit;text-align:left;cursor:pointer;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:12px 16px;display:flex;flex-direction:column;gap:2px;transition:border-color .2s,background .2s,transform .2s}
+.tabs [role="tab"] small{font-family:var(--mono);font-size:.7rem;color:var(--muted);letter-spacing:.08em}
+.tabs [role="tab"] strong{font-size:1rem}
+.tabs [role="tab"]:hover{border-color:var(--ink)}
+.tabs [role="tab"][aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.tabs [role="tab"][aria-selected="true"] small{color:color-mix(in srgb,var(--paper) 70%,transparent)}
+.case h3{font-family:var(--serif);font-weight:400;font-size:clamp(1.9rem,3.6vw,2.7rem);line-height:1.05}
+.case .when{font-family:var(--mono);font-size:.78rem;color:var(--accent);font-weight:700;letter-spacing:.06em;margin:6px 0 4px}
+.case .lead{max-width:60ch;color:var(--muted);margin-bottom:22px}
+.pipe-wrap{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
+.pipe-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.pipe-top button{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border:0;border-radius:999px;padding:8px 14px;cursor:pointer;font-weight:700}
+.pipe{list-style:none;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:10px;position:relative}
+.pipe li{position:relative}
+.pipe li:not(:last-child)::after{content:"";position:absolute;top:22px;left:calc(50% + 24px);right:calc(-50% + 24px);height:2px;background:repeating-linear-gradient(90deg,var(--line) 0 6px,transparent 6px 12px)}
+.pipe button{width:100%;background:transparent;border:0;cursor:pointer;color:var(--ink);font:inherit;display:flex;flex-direction:column;align-items:center;gap:8px;padding:0 4px;text-align:center}
+.pipe .node{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;border:2px solid var(--line);background:var(--paper);font-family:var(--mono);font-weight:700;font-size:.85rem;transition:all .25s;position:relative;z-index:1}
+.pipe .nm{font-size:.88rem;font-weight:600;line-height:1.2}
+.pipe button:hover .node{border-color:var(--ink)}
+.pipe button[aria-pressed="true"] .node{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);transform:scale(1.12);box-shadow:0 0 0 6px var(--accent-soft)}
+.pipe button[aria-pressed="true"] .nm{color:var(--accent)}
+.pipe-detail{margin-top:20px;padding:16px 18px;background:var(--paper-2);border-radius:10px;border:1px dashed var(--line);min-height:92px}
+.pipe-detail .label{color:var(--accent);font-weight:700}
+.pipe-detail p{margin-top:6px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chip{font-family:var(--mono);font-size:.72rem;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--muted)}
+.case-cols{display:grid;grid-template-columns:minmax(0,1fr);gap:0;margin-top:22px}
+.bul{list-style:none;display:grid;gap:0}
+.bul li{display:grid;grid-template-columns:34px 1fr;gap:6px;padding:12px 0;border-top:1px solid var(--line)}
+.bul li:last-child{border-bottom:1px solid var(--line)}
+.bul li span{font-family:var(--mono);font-size:.74rem;color:var(--accent);padding-top:4px;font-weight:700}
+
+/* ---------- biomarkers ---------- */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.filters button{font-family:var(--mono);font-size:.74rem;letter-spacing:.04em;background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:8px 14px;cursor:pointer;transition:all .2s}
+.filters button:hover{border-color:var(--ink)}
+.filters button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.panel-table{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.thead,.row{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1.3fr) 130px;gap:14px;padding:14px 20px;align-items:center}
+.thead{background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase}
+.rows{list-style:none}
+.row{border-top:1px solid var(--line);transition:background .2s}
+.row:hover{background:var(--paper-2)}
+.row[hidden]{display:none}
+.row .nm{font-weight:600;display:flex;gap:10px;align-items:center}
+.row .nm::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none}
+.row.basic .nm::before{background:transparent;border:2px solid var(--flag)}
+.row .cat{font-family:var(--mono);font-size:.78rem;color:var(--muted)}
+.pill{justify-self:start;font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;font-weight:700;padding:4px 10px;border-radius:6px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent)}
+.row.basic .pill{background:transparent;color:var(--flag);border-color:var(--flag)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 22px;margin-top:14px;font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.legend span::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--accent);margin-right:8px}
+.legend span.b::before{background:transparent;border:2px solid var(--flag)}
+
+/* ---------- history ---------- */
+.note{display:grid;grid-template-columns:230px minmax(0,1fr);gap:28px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px}
+.note h3{font-family:var(--serif);font-weight:400;font-size:2rem;line-height:1.05}
+.note .who{font-style:italic;color:var(--muted);margin-top:6px}
+.note .where,.note .span{font-family:var(--mono);font-size:.76rem;margin-top:10px;color:var(--accent);font-weight:700;letter-spacing:.04em}
+.obs{list-style:none;display:grid;gap:14px}
+.obs li{padding-left:22px;position:relative;font-size:1.05rem}
+.obs li::before{content:"+";position:absolute;left:0;top:0;font-family:var(--mono);color:var(--accent);font-weight:700}
+
+/* ---------- education ---------- */
+.edu-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+.card.edu{grid-column:span 7}
+.card.ach{grid-column:span 5;background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.card.ach .label{color:color-mix(in srgb,var(--paper) 65%,transparent)}
+.card.cert{grid-column:span 12}
+.card h3{font-family:var(--serif);font-weight:400;font-size:1.9rem;line-height:1.1;margin:8px 0 4px}
+.card .sub{color:var(--muted)}
+.card.ach .sub,.card.ach p{color:color-mix(in srgb,var(--paper) 88%,transparent)}
+.cgpa{display:flex;align-items:baseline;gap:10px;margin-top:18px}
+.cgpa b{font-family:var(--serif);font-weight:400;font-size:4rem;line-height:1;color:var(--accent)}
+.cgpa span{font-family:var(--mono);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.certs{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:14px}
+.certs li{border:1px dashed var(--line);border-radius:10px;padding:16px;display:flex;gap:12px;align-items:flex-start;font-weight:500}
+.certs li::before{content:"✓";display:grid;place-items:center;width:24px;height:24px;flex:none;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-size:.8rem;font-weight:700}
+
+/* ---------- contact ---------- */
+.contact{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:22px}
+.big-mail{display:block;font-family:var(--serif);font-size:clamp(1.7rem,4.2vw,3.1rem);line-height:1.08;text-decoration:none;word-break:break-word;border-bottom:3px solid var(--accent);padding-bottom:6px;transition:color .2s}
+.big-mail:hover{color:var(--accent)}
+.contact-list{list-style:none;margin-top:22px;display:grid;gap:0}
+.contact-list li{border-top:1px solid var(--line)}
+.contact-list li:last-child{border-bottom:1px solid var(--line)}
+.contact-list a{display:flex;justify-content:space-between;gap:14px;align-items:center;padding:14px 4px;text-decoration:none;transition:padding .2s,color .2s}
+.contact-list a:hover{padding-left:12px;color:var(--accent)}
+.contact-list .label{flex:none}
+.contact-list .val{font-family:var(--mono);font-size:.88rem;word-break:break-all;text-align:right}
+.copy{margin-top:16px}
+form{display:grid;gap:14px}
+label{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:grid;gap:6px}
+input,textarea{font:inherit;font-size:1rem;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px 14px;width:100%;text-transform:none;letter-spacing:normal}
+textarea{min-height:130px;resize:vertical}
+input:focus,textarea:focus{border-color:var(--accent)}
+.send{font:inherit;font-weight:700;cursor:pointer;background:var(--accent);color:var(--accent-ink);border:0;border-radius:999px;padding:14px 22px;display:inline-flex;align-items:center;gap:10px;justify-content:center;transition:transform .2s}
+.send:hover{transform:translateY(-2px)}
+.form-note{font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+
+footer{margin-top:64px;padding-top:18px;border-top:2px solid var(--ink);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;font-family:var(--mono);font-size:.74rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+
+/* ---------- command bar ---------- */
+.cmd{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);width:min(640px,calc(100% - 24px));z-index:50}
+.cmd-box{display:flex;gap:8px;align-items:center;background:var(--ink);color:var(--paper);border-radius:999px;padding:7px 8px 7px 18px;box-shadow:0 10px 40px rgba(0,0,0,.28)}
+.cmd-box .prompt{font-family:var(--mono);color:var(--accent);font-weight:700}
+:root[data-theme="dark"] .cmd-box{background:#1c2a26;border:1px solid var(--line)}
+:root[data-theme="dark"] .cmd-box .prompt{color:var(--accent)}
+.cmd-box input{flex:1;min-width:0;background:transparent;border:0;color:inherit;font-family:var(--mono);font-size:.9rem;padding:10px 4px;border-radius:0}
+.cmd-box input::placeholder{color:color-mix(in srgb,var(--paper) 60%,transparent)}
+:root[data-theme="dark"] .cmd-box input::placeholder{color:var(--muted)}
+.cmd-box input:focus{outline:none}
+.cmd-box:focus-within{outline:3px solid var(--accent);outline-offset:3px}
+.cmd-box button{flex:none;width:40px;height:40px;border-radius:50%;border:0;background:var(--accent);color:var(--accent-ink);cursor:pointer;display:grid;place-items:center;font-weight:700}
+.cmd-box button svg{width:18px;height:18px}
+.cmd-box button.mic[aria-pressed="true"]{background:var(--flag);color:#fff;animation:pulse 1.2s infinite}
+.cmd-box button.mic[hidden]{display:none}
+.reply{font-family:var(--mono);font-size:.78rem;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:10px;display:none;box-shadow:0 6px 24px rgba(0,0,0,.14)}
+.reply.show{display:block}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(185,58,36,.5)}100%{box-shadow:0 0 0 14px rgba(185,58,36,0)}}
+
+/* ---------- reveal ---------- */
+.js .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
+.js .reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  .js .reveal{opacity:1;transform:none;transition:none}
+  .extract li{animation:none}
+  .cmd-box button.mic[aria-pressed="true"]{animation:none}
+  *{transition-duration:.01ms !important}
+}
+
+/* ---------- responsive ---------- */
+@media (max-width:1000px){
+  .shell{grid-template-columns:minmax(0,1fr)}
+  .rail{position:sticky;top:0;z-index:40;height:auto;flex-direction:row;align-items:center;gap:12px;padding:10px 14px;border-right:0;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--paper) 94%,transparent)}
+  .brand span{display:none}
+  .rail nav{flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+  .rail nav::-webkit-scrollbar{display:none}
+  .rail nav ol{flex-direction:row;gap:2px}
+  .rail nav a{white-space:nowrap;border-left:0;border-bottom:3px solid transparent;border-radius:6px 6px 0 0;padding:8px 10px}
+  .rail nav a i{display:none}
+  .rail nav a[aria-current="true"]{border-bottom-color:var(--accent);border-left-color:transparent}
+  .rail-foot{margin-top:0}
+  .rail-foot .label{display:none}
+  section{scroll-margin-top:70px}
+  .hero-grid,.contact{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:760px){
+  body{font-size:16px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stat:nth-child(2){border-right:0}
+  .stat:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .pipe{grid-auto-flow:row;grid-auto-columns:auto;gap:4px}
+  .pipe li:not(:last-child)::after{top:48px;left:26px;right:auto;width:2px;height:calc(100% - 44px);background:repeating-linear-gradient(180deg,var(--line) 0 6px,transparent 6px 12px)}
+  .pipe button{flex-direction:row;text-align:left;gap:14px;padding:6px 0}
+  .thead{display:none}
+  .row{grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding:14px 16px}
+  .row .cat{grid-column:1;grid-row:2;padding-left:19px}
+  .row .pill{grid-column:2;grid-row:1 / span 2;justify-self:end}
+  .note{grid-template-columns:minmax(0,1fr);gap:18px;padding:20px}
+  .card.edu,.card.ach,.card.cert{grid-column:span 12}
+  .certs{grid-template-columns:minmax(0,1fr)}
+  .sec-head .label{margin-left:0;width:100%}
+  .meta-strip{flex-direction:column}
+  .contact-list a{flex-direction:column;align-items:flex-start;gap:2px}
+  .contact-list .val{text-align:left}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to report</a>
+<div class="shell">
+
+  <aside class="rail">
+    <a class="brand" href="#top" aria-label="Pavneet Kaur — back to top">
+      <b>PK</b>
+      <span>Candidate<br>Analysis Report</span>
+    </a>
+    <nav aria-label="Report sections">
+      <ol>
+        <li><a href="#top" data-spy="top"><i>00</i>Impression</a></li>
+        <li><a href="#projects" data-spy="projects"><i>01</i>Findings</a></li>
+        <li><a href="#markers" data-spy="markers"><i>02</i>Biomarkers</a></li>
+        <li><a href="#history" data-spy="history"><i>03</i>History</a></li>
+        <li><a href="#education" data-spy="education"><i>04</i>Credentials</a></li>
+        <li><a href="#contact" data-spy="contact"><i>05</i>Referral</a></li>
+      </ol>
+    </nav>
+    <div class="rail-foot">
+      <span class="label">Display</span>
+      <button class="btn-ghost" id="themeBtn" type="button" aria-pressed="false">Scan mode</button>
+    </div>
+  </aside>
+
+  <main id="main">
+
+    <!-- ===== 00 HERO / IMPRESSION ===== -->
+    <header class="hero" id="top" aria-labelledby="hero-title">
+      <div class="meta-strip" aria-label="Report details">
+        <div><span class="label">Report</span><strong>Candidate Analysis</strong></div>
+        <div><span class="label">Subject</span><strong>Pavneet Kaur</strong></div>
+        <div><span class="label">Field</span><strong>AI &amp; Machine Learning</strong></div>
+        <div><span class="label">Generated</span><strong id="today">—</strong></div>
+      </div>
+
+      <h1 id="hero-title">Pavneet <em>Kaur</em></h1>
+      <p class="tagline">An AI/ML student who builds tools that read, listen, and help.</p>
+
+      <div class="hero-grid">
+        <div class="panel specimen reveal" id="specimen">
+          <div class="panel-head">
+            <span class="label">Specimen · Summary text</span>
+            <button type="button" id="rescan">↻ Re-run scan</button>
+          </div>
+          <div id="scan-text">
+            <div class="scanner" id="scanner" aria-hidden="true"></div>
+            <p>Computer Science student focused on <mark data-k="Artificial Intelligence">Artificial Intelligence</mark> and <mark data-k="Machine Learning">Machine Learning</mark> with practical experience in <mark data-k="Data preprocessing">data preprocessing</mark>, machine learning workflows, <mark data-k="AI automation">AI automation</mark>, and intelligent <mark data-k="Healthcare apps">healthcare applications</mark>.</p>
+            <p>Skilled in <mark data-k="Python">Python</mark>, <mark data-k="Scikit-learn">Scikit-learn</mark>, <mark data-k="Pandas">Pandas</mark>, and <mark data-k="NLP">NLP</mark> concepts with experience building AI-powered systems, automation tools, and <mark data-k="Predictive analysis">predictive analysis</mark> projects.</p>
+          </div>
+        </div>
+
+        <div class="panel extract reveal" aria-live="polite">
+          <div class="panel-head"><span class="label">Extracted markers</span></div>
+          <ul id="extracted"><li class="empty" style="border:0;background:none;padding:0;animation:none">Awaiting scan…</li></ul>
+          <p class="scan-status" id="scanStatus">STATUS: IDLE</p>
+        </div>
+      </div>
+
+      <div class="stats reveal" role="list" aria-label="Key figures from the resume">
+        <div class="stat" role="listitem"><b data-to="8.3" data-dec="1">8.3</b><span>CGPA · B.Tech</span></div>
+        <div class="stat" role="listitem"><b data-to="2">2</b><span>AI projects built</span></div>
+        <div class="stat" role="listitem"><b data-to="1">1</b><span>ML industrial internship</span></div>
+        <div class="stat" role="listitem"><b data-to="3">3</b><span>Workshops &amp; trainings</span></div>
+      </div>
+
+      <div class="impression reveal">
+        <span class="label">Impression</span>
+        <p>A hands-on AI/ML builder at the start of her career: she has shipped a healthcare report analyzer powered by ML, NLP and the Gemini API, built a voice assistant in Python, and interned in machine learning.
+          <small>RECOMMENDED NEXT STEP → start a conversation (see §05 Referral).</small>
+        </p>
+      </div>
+    </header>
+
+    <!-- ===== 01 PROJECTS ===== -->
+    <section id="projects" aria-labelledby="h-projects">
+      <div class="sec-head reveal">
+        <span class="code">§01</span>
+        <h2 id="h-projects" tabindex="-1">Findings: Projects</h2>
+        <span class="label">Click a stage to inspect it</span>
+      </div>
+
+      <div class="tabs reveal" role="tablist" aria-label="Projects">
+        <button role="tab" id="tab-hl" aria-selected="true" aria-controls="case-hl" type="button"><small>JAN 2025 – MAY 2025</small><strong>HealthLens Pro</strong></button>
+        <button role="tab" id="tab-va" aria-selected="false" aria-controls="case-va" tabindex="-1" type="button"><small>AUG 2024 – DEC 2024</small><strong>Futuristic Voice Assistant</strong></button>
+      </div>
+
+      <!-- Case: HealthLens -->
+      <article class="case reveal" id="case-hl" role="tabpanel" aria-labelledby="tab-hl" data-pipe="hl">
+        <h3>HealthLens Pro</h3>
+        <p class="when">AI-POWERED MEDICAL REPORT ANALYSIS SYSTEM</p>
+        <p class="lead">A healthcare application that analyzes medical reports and predicts possible health conditions, the same kind of reading this page performs on my resume.</p>
+        <div class="pipe-wrap">
+          <div class="pipe-top"><span class="label">Pipeline · Report → Insight</span><button type="button" class="run">▶ Run pipeline</button></div>
+          <ol class="pipe" aria-label="HealthLens Pro pipeline"></ol>
+          <div class="pipe-detail" aria-live="polite"></div>
+        </div>
+        <div class="case-cols">
+          <ul class="bul" aria-label="HealthLens Pro details">
+            <li><span>A1</span>Developed an AI/ML-based healthcare application that analyzes medical reports and predicts possible health conditions.</li>
+            <li><span>A2</span>Implemented machine learning and NLP techniques using Python, Pandas, and Scikit-learn.</li>
+            <li><span>A3</span>Built features for report summarization, disease insights, and first-aid recommendations.</li>
+            <li><span>A4</span>Integrated the Gemini API to extract biomarkers and generate intelligent medical summaries.</li>
+            <li><span>A5</span>Performed data preprocessing, feature extraction, and text cleaning for better prediction accuracy.</li>
+            <li><span>A6</span>Worked with structured and unstructured healthcare datasets for intelligent report analysis.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Case: Voice assistant -->
+      <article class="case" id="case-va" role="tabpanel" aria-labelledby="tab-va" data-pipe="va" hidden>
+        <h3>Futuristic Voice Assistant</h3>
+        <p class="when">PYTHON · SPEECH-DRIVEN AUTOMATION</p>
+        <p class="lead">A Python voice assistant that listens, acts, and answers back. It is the idea behind the command bar at the bottom of this page.</p>
+        <div class="pipe-wrap">
+          <div class="pipe-top"><span class="label">Pipeline · Voice → Action → Voice</span><button type="button" class="run">▶ Run pipeline</button></div>
+          <ol class="pipe" aria-label="Voice assistant pipeline"></ol>
+          <div class="pipe-detail" aria-live="polite"></div>
+        </div>
+        <div class="case-cols">
+          <ul class="bul" aria-label="Voice assistant details">
+            <li><span>B1</span>Developed a Python-based voice assistant using speech recognition and text-to-speech functionalities.</li>
+            <li><span>B2</span>Implemented automation features like opening applications and searching information through voice commands.</li>
+            <li><span>B3</span>Used Python libraries such as SpeechRecognition and pyttsx3 for voice interaction.</li>
+            <li><span>B4</span>Designed the assistant to process commands efficiently with minimal response delay.</li>
+            <li><span>B5</span>Built a modular structure so future AI automation features can be added easily.</li>
+          </ul>
+        </div>
+      </article>
+    </section>
+
+    <!-- ===== 02 BIOMARKERS ===== -->
+    <section id="markers" aria-labelledby="h-markers">
+      <div class="sec-head reveal">
+        <span class="code">§02</span>
+        <h2 id="h-markers" tabindex="-1">Biomarker Panel: Skills</h2>
+        <span class="label">Filter by category</span>
+      </div>
+
+      <div class="filters reveal" role="group" aria-label="Filter skills by category">
+        <button type="button" data-f="all" aria-pressed="true">All</button>
+        <button type="button" data-f="Languages" aria-pressed="false">Languages</button>
+        <button type="button" data-f="Machine Learning &amp; AI" aria-pressed="false">ML &amp; AI</button>
+        <button type="button" data-f="Libraries &amp; Tools" aria-pressed="false">Libraries &amp; Tools</button>
+        <button type="button" data-f="Web Technologies" aria-pressed="false">Web</button>
+        <button type="button" data-f="Core Concepts" aria-pressed="false">Core Concepts</button>
+      </div>
+
+      <div class="panel-table reveal">
+        <div class="thead" aria-hidden="true"><span>Marker</span><span>Category</span><span>Flag</span></div>
+        <ul class="rows" id="rows">
+          <li class="row" data-cat="Languages"><span class="nm">Python</span><span class="cat">Languages</span><span class="pill">DETECTED</span></li>
+          <li class="row basic" data-cat="Languages"><span class="nm">Java</span><span class="cat">Languages</span><span class="pill">BASIC</span></li>
+          <li class="row" data-cat="Languages"><span class="nm">C / C++</span><span class="cat">Languages</span><span class="pill">DETECTED</span></li>
+          <li class="row" data-cat="Languages"><span class="nm">HTML</span><span class="cat">Languages</span><span class="pill">DETECTED</span></li>
+          <li class="row" data-cat="Languages"><span class="nm">CSS</span><span class="cat">Languages</span><span class="pill">DETECTED</span></li>
+          <li class="row" data-cat="Machine Learning &amp; AI"><span class="nm">Scikit-learn</span><span class="cat">Machine Learning &amp; AI</span><span class="pill">DETECTED</span></li>
+          <li class="row" data-cat="Machine Learning &amp; AI"><span class="nm">NLP</span><span class="cat">Machine Learning &amp; AI</span><span class="pill">DETECTED</span></li>
+          <li class="row" data-cat="Machine Learning &amp; AI"><span class="nm">AI Automation</span><span class="cat">Machine Learning &amp; AI</span><span class="pill">DETECTED</span></li>
+          <li class="row" data-cat="Machine Learning &amp; AI"><span class="nm">Data Analysis</span><span class="cat">Machine Learning &amp; AI</span><span class="pill">DETECTED</span></li>
+          <li class="row" data-cat="Libraries &amp; Tools"><span class="nm">Pandas</span><span class="cat">Libraries &amp; Tools</span><span class="pill">DETECTED</span></li>
+          <li class="row" data-cat="Libraries &amp; Tools"><span class="nm">NumPy</span><span class="cat">Libraries &amp; Tools</span><span class="pill">DETECTED</span></li>
+          <li class="row" data-cat="Libraries &amp; Tools"><span class="nm">Git</span><span class="cat">Libraries &amp; Tools</span><span class="pill">DETECTED</span></li>
+          <li class="row" data-cat="Libraries &amp; Tools"><span class="nm">VS Code</span><span class="cat">Libraries &amp; Tools</span><span class="pill">DETECTED</span></li>
+          <li class="row" data-cat="Libraries &amp; Tools"><span class="nm">Jupyter Notebook</span><span class="cat">Libraries &amp; Tools</span><span class="pill">DETECTED</span></li>
+          <li class="row basic" data-cat="Web Technologies"><span class="nm">Flask</span><span class="cat">Web Technologies</span><span class="pill">BASIC</span></li>
+          <li class="row" data-cat="Core Concepts"><span class="nm">Data Structures &amp; Algorithms</span><span class="cat">Core Concepts</span><span class="pill">DETECTED</span></li>
+          <li class="row" data-cat="Core Concepts"><span class="nm">Prompt Engineering</span><span class="cat">Core Concepts</span><span class="pill">DETECTED</span></li>
+        </ul>
+      </div>
+      <p class="legend reveal"><span>DETECTED: listed on the resume</span><span class="b">BASIC: marked “Basic” on the resume</span><span id="count" class="mono" style="margin-left:auto;color:var(--ink)" aria-live="polite"></span></p>
+    </section>
+
+    <!-- ===== 03 HISTORY ===== -->
+    <section id="history" aria-labelledby="h-history">
+      <div class="sec-head reveal">
+        <span class="code">§03</span>
+        <h2 id="h-history" tabindex="-1">Clinical History: Experience</h2>
+        <span class="label">1 entry</span>
+      </div>
+      <article class="note reveal">
+        <div>
+          <h3>White Hat Coders</h3>
+          <p class="who">Industrial Intern, Machine Learning</p>
+          <p class="where">Mohali, Punjab</p>
+          <p class="span">JUNE 2025 – JULY 2025</p>
+        </div>
+        <ul class="obs">
+          <li>Worked on machine learning and data analysis tasks using Python.</li>
+          <li>Performed data preprocessing, feature extraction, and model implementation.</li>
+          <li>Collaborated on AI-related mini projects and automation tasks.</li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- ===== 04 EDUCATION ===== -->
+    <section id="education" aria-labelledby="h-edu">
+      <div class="sec-head reveal">
+        <span class="code">§04</span>
+        <h2 id="h-edu" tabindex="-1">Credentials &amp; Education</h2>
+        <span class="label">Verified from resume</span>
+      </div>
+      <div class="edu-grid">
+        <article class="card edu reveal">
+          <span class="label">Education</span>
+          <h3>GNA University</h3>
+          <p class="sub">Bachelor of Technology (B.Tech) · 2023 – Present</p>
+          <div class="cgpa"><b>8.3</b><span>CGPA</span></div>
+        </article>
+        <article class="card ach reveal">
+          <span class="label">Achievements</span>
+          <h3>Hackathons</h3>
+          <p>Participated in team-based hackathons focused on solving real-world problems using AI and technology.</p>
+        </article>
+        <article class="card cert reveal">
+          <span class="label">Certifications &amp; Workshops</span>
+          <ul class="certs">
+            <li>Deep Learning &amp; Generative AI Workshop, GNA University</li>
+            <li>UiPath Automation Developer Associate Training</li>
+            <li>Computer Vision Workshop</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===== 05 CONTACT ===== -->
+    <section id="contact" aria-labelledby="h-contact">
+      <div class="sec-head reveal">
+        <span class="code">§05</span>
+        <h2 id="h-contact" tabindex="-1">Referral: Let’s Talk</h2>
+        <span class="label">Open to internships &amp; collaborations</span>
+      </div>
+      <div class="contact">
+        <div class="reveal">
+          <a class="big-mail" href="mailto:kaurpavneet099@gmail.com" id="mailLink">kaurpavneet099@gmail.com</a>
+          <ul class="contact-list">
+            <li><a href="tel:9876782350"><span class="label">Phone</span><span class="val">9876782350</span></a></li>
+            <li><a href="https://linkedin.com/in/pavneetkaur-tech" target="_blank" rel="noopener noreferrer"><span class="label">LinkedIn</span><span class="val">linkedin.com/in/pavneetkaur-tech</span></a></li>
+            <li><a href="https://github.com/PavneetKaur14" target="_blank" rel="noopener noreferrer"><span class="label">GitHub</span><span class="val">github.com/PavneetKaur14</span></a></li>
+          </ul>
+          <button class="btn-ghost copy" type="button" id="copyBtn">Copy email address</button>
+          <span class="form-note" id="copyNote" role="status" aria-live="polite"></span>
+        </div>
+
+        <form class="panel reveal" id="contactForm" novalidate>
+          <span class="label">Compose a message</span>
+          <label>Your name
+            <input type="text" id="fName" name="name" autocomplete="name" required>
+          </label>
+          <label>Your email
+            <input type="email" id="fEmail" name="email" autocomplete="email">
+          </label>
+          <label>Message
+            <textarea id="fMsg" name="message" required></textarea>
+          </label>
+          <button class="send" type="submit">Send via email app <span aria-hidden="true">→</span></button>
+          <p class="form-note" id="formNote" role="status" aria-live="polite">This opens your email app with the message ready to send.</p>
+        </form>
+      </div>
+
+      <footer>
+        <span>End of report</span>
+        <span>Pavneet Kaur · AI &amp; Machine Learning</span>
+        <span id="yr"></span>
+      </footer>
+    </section>
+  </main>
+</div>
+
+<!-- ===== COMMAND BAR (voice / text) ===== -->
+<div class="cmd">
+  <div class="reply" id="reply" role="status" aria-live="polite"></div>
+  <form class="cmd-box" id="cmdForm" role="search" aria-label="Assistant command bar">
+    <span class="prompt" aria-hidden="true">&gt;_</span>
+    <label for="cmdInput" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Type a command such as projects, skills, or contact</label>
+    <input id="cmdInput" type="text" autocomplete="off" spellcheck="false" placeholder="Try: projects · skills · contact · help">
+    <button type="button" class="mic" id="micBtn" aria-pressed="false" aria-label="Speak a command" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+    </button>
+    <button type="submit" aria-label="Run command">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </button>
+  </form>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  var doc = document, root = doc.documentElement;
+  root.classList.add('js');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var $ = function(s,c){return (c||doc).querySelector(s)};
+  var $$ = function(s,c){return Array.prototype.slice.call((c||doc).querySelectorAll(s))};
+
+  /* ---------- dates ---------- */
+  var now = new Date();
+  var dStr = now.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}).toUpperCase();
+  $('#today').textContent = dStr;
+  $('#yr').textContent = 'Generated ' + dStr;
+
+  /* ---------- theme ---------- */
+  var themeBtn = $('#themeBtn');
+  function setTheme(t){
+    root.setAttribute('data-theme', t);
+    themeBtn.setAttribute('aria-pressed', t === 'dark' ? 'true' : 'false');
+    themeBtn.textContent = t === 'dark' ? 'Paper mode' : 'Scan mode';
+    try{ localStorage.setItem('pk-theme', t); }catch(e){}
+  }
+  var saved = null;
+  try{ saved = localStorage.getItem('pk-theme'); }catch(e){}
+  setTheme(saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+  themeBtn.addEventListener('click', function(){ setTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'); });
+
+  /* ---------- reveal ---------- */
+  var io = ('IntersectionObserver' in window) ? new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:.12, rootMargin:'0px 0px -6% 0px'}) : null;
+  $$('.reveal').forEach(function(el){ io ? io.observe(el) : el.classList.add('in'); });
+
+  /* ---------- count-up stats ---------- */
+  function countUp(el){
+    var to = parseFloat(el.getAttribute('data-to')), dec = parseInt(el.getAttribute('data-dec')||'0',10);
+    if(reduce){ el.textContent = to.toFixed(dec); return; }
+    var start = null, dur = 1200;
+    function step(t){
+      if(start === null) start = t;
+      var p = Math.min((t-start)/dur,1), eased = 1 - Math.pow(1-p,3);
+      el.textContent = (to*eased).toFixed(dec);
+      if(p<1) requestAnimationFrame(step); else el.textContent = to.toFixed(dec);
+    }
+    requestAnimationFrame(step);
+  }
+  if('IntersectionObserver' in window){
+    var so = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ $$('[data-to]',e.target).forEach(countUp); so.unobserve(e.target); } });
+    },{threshold:.4});
+    var st = $('.stats'); if(st) so.observe(st);
+  }
+
+  /* ---------- hero scan ---------- */
+  var scanBox = $('#scan-text'), scanner = $('#scanner'), extracted = $('#extracted'), status = $('#scanStatus');
+  var marks = $$('mark', scanBox), raf = null;
+  function resetScan(){
+    marks.forEach(function(m){ m.classList.remove('hit'); });
+    extracted.innerHTML = '';
+    scanner.classList.remove('on');
+    if(raf) cancelAnimationFrame(raf);
+  }
+  function addChip(txt){
+    var li = doc.createElement('li'); li.textContent = txt; extracted.appendChild(li);
+  }
+  function finishScan(){
+    scanner.classList.remove('on');
+    status.textContent = 'STATUS: COMPLETE · ' + marks.length + ' MARKERS EXTRACTED';
+  }
+  function runScan(){
+    resetScan();
+    if(reduce){
+      marks.forEach(function(m){ m.classList.add('hit'); addChip(m.getAttribute('data-k')); });
+      finishScan(); return;
+    }
+    status.textContent = 'STATUS: SCANNING…';
+    scanner.classList.add('on');
+    var h = scanBox.offsetHeight, dur = 3200, t0 = null, done = {};
+    function frame(t){
+      if(t0 === null) t0 = t;
+      var p = Math.min((t - t0)/dur, 1), y = p*h;
+      scanner.style.top = y + 'px';
+      marks.forEach(function(m,i){
+        var cy = m.offsetTop + m.offsetHeight/2;
+        if(!done[i] && cy <= y){ done[i] = true; m.classList.add('hit'); addChip(m.getAttribute('data-k')); }
+      });
+      if(p < 1) raf = requestAnimationFrame(frame);
+      else { marks.forEach(function(m,i){ if(!done[i]){ m.classList.add('hit'); addChip(m.getAttribute('data-k')); } }); finishScan(); }
+    }
+    raf = requestAnimationFrame(frame);
+  }
+  $('#rescan').addEventListener('click', runScan);
+  setTimeout(runScan, 500);
+
+  /* ---------- project tabs ---------- */
+  var tabs = $$('[role="tab"]');
+  function selectTab(tab, focus){
+    tabs.forEach(function(t){
+      var on = t === tab;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+      var panel = doc.getElementById(t.getAttribute('aria-controls'));
+      panel.hidden = !on;
+      if(on) panel.classList.add('in');
+    });
+    if(focus) tab.focus();
+  }
+  tabs.forEach(function(t,i){
+    t.addEventListener('click', function(){ selectTab(t); });
+    t.addEventListener('keydown', function(e){
+      var n = null;
+      if(e.key === 'ArrowRight') n = tabs[(i+1)%tabs.length];
+      if(e.key === 'ArrowLeft') n = tabs[(i-1+tabs.length)%tabs.length];
+      if(e.key === 'Home') n = tabs[0];
+      if(e.key === 'End') n = tabs[tabs.length-1];
+      if(n){ e.preventDefault(); selectTab(n,true); }
+    });
+  });
+
+  /* ---------- pipelines ---------- */
+  var PIPES = {
+    hl:[
+      {n:'Ingest', t:'Structured and unstructured healthcare datasets feed the system, the raw material for intelligent report analysis.', c:['Structured data','Unstructured data']},
+      {n:'Clean', t:'Data preprocessing, feature extraction, and text cleaning prepare every report for better prediction accuracy.', c:['Preprocessing','Feature extraction','Text cleaning']},
+      {n:'Predict', t:'Machine learning and NLP built with Python, Pandas, and Scikit-learn predict possible health conditions.', c:['Python','Pandas','Scikit-learn','NLP']},
+      {n:'Extract', t:'The Gemini API pulls out biomarkers and generates intelligent medical summaries.', c:['Gemini API','Biomarkers','Summaries']},
+      {n:'Advise', t:'Outputs include report summarization, disease insights, and first-aid recommendations.', c:['Summarization','Disease insights','First-aid tips']}
+    ],
+    va:[
+      {n:'Listen', t:'Speech recognition captures the spoken command, built with the SpeechRecognition library.', c:['SpeechRecognition']},
+      {n:'Process', t:'Commands are processed efficiently with minimal response delay.', c:['Command processing','Low latency']},
+      {n:'Act', t:'Automation features open applications and search for information through voice commands.', c:['Open apps','Search by voice']},
+      {n:'Speak', t:'Text-to-speech replies come through pyttsx3 for natural voice interaction.', c:['pyttsx3','Text-to-speech']},
+      {n:'Extend', t:'A modular structure makes it easy to add future AI automation features.', c:['Modular design','AI automation']}
+    ]
+  };
+  $$('.case').forEach(function(cs){
+    var key = cs.getAttribute('data-pipe'), steps = PIPES[key], list = $('.pipe',cs), detail = $('.pipe-detail',cs), btns = [], timer = null;
+    steps.forEach(function(s,i){
+      var li = doc.createElement('li'), b = doc.createElement('button');
+      b.type = 'button'; b.setAttribute('aria-pressed','false');
+      b.innerHTML = '<span class="node">'+(i+1)+'</span><span class="nm">'+s.n+'</span>';
+      b.addEventListener('click', function(){ stop(); show(i); });
+      li.appendChild(b); list.appendChild(li); btns.push(b);
+    });
+    function show(i){
+      btns.forEach(function(b,j){ b.setAttribute('aria-pressed', j===i ? 'true' : 'false'); });
+      var s = steps[i];
+      detail.innerHTML = '<span class="label">Stage '+(i+1)+' of '+steps.length+' · '+s.n+'</span><p>'+s.t+'</p><div class="chips">'+s.c.map(function(c){return '<span class="chip">'+c+'</span>';}).join('')+'</div>';
+    }
+    function stop(){ if(timer){ clearInterval(timer); timer = null; run.textContent = '▶ Run pipeline'; } }
+    var run = $('.run',cs);
+    run.addEventListener('click', function(){
+      if(timer){ stop(); return; }
+      var i = 0; show(0); run.textContent = '■ Stop';
+      timer = setInterval(function(){
+        i++;
+        if(i >= steps.length){ stop(); return; }
+        show(i);
+      }, reduce ? 1600 : 1100);
+    });
+    show(0);
+  });
+
+  /* ---------- skills filter ---------- */
+  var rows = $$('.row'), fbtns = $$('.filters button'), count = $('#count');
+  function decode(s){ var t = doc.createElement('textarea'); t.innerHTML = s; return t.value; }
+  function applyFilter(f){
+    var shown = 0;
+    rows.forEach(function(r){
+      var ok = f === 'all' || r.getAttribute('data-cat') === f;
+      r.hidden = !ok; if(ok) shown++;
+    });
+    count.textContent = shown + ' / ' + rows.length + ' markers shown';
+  }
+  fbtns.forEach(function(b){
+    b.addEventListener('click', function(){
+      fbtns.forEach(function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      applyFilter(decode(b.getAttribute('data-f')));
+    });
+  });
+  applyFilter('all');
+
+  /* ---------- scroll spy ---------- */
+  var spyLinks = $$('[data-spy]'), spyIds = ['top','projects','markers','history','education','contact'];
+  function setActive(id){
+    spyLinks.forEach(function(a){
+      if(a.getAttribute('data-spy') === id) a.setAttribute('aria-current','true'); else a.removeAttribute('aria-current');
+    });
+  }
+  function onScroll(){
+    var y = window.scrollY + window.innerHeight*0.35, cur = 'top';
+    spyIds.forEach(function(id){
+      var el = doc.getElementById(id);
+      if(el && el.getBoundingClientRect().top + window.scrollY <= y) cur = id;
+    });
+    if(window.innerHeight + window.scrollY >= doc.body.scrollHeight - 4) cur = 'contact';
+    setActive(cur);
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', onScroll);
+  onScroll();
+
+  /* ---------- contact ---------- */
+  var EMAIL = 'kaurpavneet099@gmail.com';
+  $('#copyBtn').addEventListener('click', function(){
+    var note = $('#copyNote');
+    function ok(){ note.textContent = ' Copied: ' + EMAIL; }
+    function fail(){ note.textContent = ' Copy failed. Please select the address manually.'; }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(EMAIL).then(ok, fail);
+    } else {
+      var ta = doc.createElement('textarea'); ta.value = EMAIL; ta.style.position='fixed'; ta.style.opacity='0'; doc.body.appendChild(ta); ta.select();
+      try{ doc.execCommand('copy') ? ok() : fail(); }catch(e){ fail(); }
+      doc.body.removeChild(ta);
+    }
+  });
+  $('#contactForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var n = $('#fName').value.trim(), em = $('#fEmail').value.trim(), m = $('#fMsg').value.trim(), note = $('#formNote');
+    if(!n || !m){ note.textContent = 'Please add your name and a message first.'; (n ? $('#fMsg') : $('#fName')).focus(); return; }
+    var subject = 'Hello Pavneet, message from ' + n;
+    var body = m + '\n\n— ' + n + (em ? '\nReply to: ' + em : '');
+    window.location.href = 'mailto:' + EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    note.textContent = 'Opening your email app…';
+  });
+
+  /* ---------- command bar (typed + voice) ---------- */
+  var input = $('#cmdInput'), reply = $('#reply'), replyTimer = null;
+  function say(msg, keep){
+    reply.textContent = msg; reply.classList.add('show');
+    clearTimeout(replyTimer);
+    if(!keep) replyTimer = setTimeout(function(){ reply.classList.remove('show'); }, 5200);
+  }
+  function go(id, label){
+    var el = doc.getElementById(id); if(!el) return;
+    el.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block:'start'});
+    var h = $('h2', el); if(h){ setTimeout(function(){ h.focus({preventScroll:true}); }, reduce ? 0 : 600); }
+    say('→ ' + label);
+  }
+  var COMMANDS = [
+    {k:['project','projects','findings','healthlens','voice assistant','work'], f:function(){ go('projects','Findings: Projects'); }},
+    {k:['skill','skills','marker','markers','biomarker','stack','tech'], f:function(){ go('markers','Biomarker Panel: Skills'); }},
+    {k:['experience','intern','internship','history','job','white hat'], f:function(){ go('history','Clinical History: Experience'); }},
+    {k:['education','university','cgpa','college','certification','certifications','workshop','achievement','hackathon','credentials'], f:function(){ go('education','Credentials & Education'); }},
+    {k:['contact','email','mail','hire','reach','referral','phone','linkedin','github'], f:function(){ go('contact','Referral: Contact'); }},
+    {k:['top','home','about','summary','start','impression'], f:function(){ window.scrollTo({top:0,behavior:reduce?'auto':'smooth'}); say('→ Impression'); }},
+    {k:['scan','rescan','analyze','analyse'], f:function(){ window.scrollTo({top:0,behavior:reduce?'auto':'smooth'}); setTimeout(runScan, reduce?0:500); say('→ Re-running scan'); }},
+    {k:['theme','dark','light','mode','night'], f:function(){ setTheme(root.getAttribute('data-theme')==='dark'?'light':'dark'); say('→ Display mode switched'); }},
+    {k:['help','commands','?'], f:function(){ say('Try: projects · skills · experience · education · contact · scan · theme', true); }}
+  ];
+  function run(text){
+    var q = text.toLowerCase().replace(/[^a-z0-9? ]/g,' ').replace(/\s+/g,' ').trim();
+    if(!q) return false;
+    for(var i=0;i<COMMANDS.length;i++){
+      for(var j=0;j<COMMANDS[i].k.length;j++){
+        var key = COMMANDS[i].k[j];
+        if(q === key || (' '+q+' ').indexOf(' '+key+' ') > -1){ COMMANDS[i].f(); return true; }
+      }
+    }
+    say('No match for “' + text + '”. Say or type “help”.');
+    return false;
+  }
+  $('#cmdForm').addEventListener('submit', function(e){ e.preventDefault(); if(run(input.value)) input.value=''; });
+
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition, mic = $('#micBtn'), rec = null, listening = false;
+  if(SR){
+    mic.hidden = false;
+    try{
+      rec = new SR(); rec.lang = 'en-IN'; rec.interimResults = false; rec.maxAlternatives = 1;
+      rec.onresult = function(ev){
+        var t = ev.results[0][0].transcript;
+        input.value = t; say('Heard: “' + t + '”', true);
+        setTimeout(function(){ run(t); input.value=''; }, 450);
+      };
+      rec.onend = function(){ listening = false; mic.setAttribute('aria-pressed','false'); };
+      rec.onerror = function(ev){ listening = false; mic.setAttribute('aria-pressed','false'); say(ev.error === 'not-allowed' ? 'Microphone permission was denied. You can still type commands.' : 'Voice input unavailable right now. You can still type commands.'); };
+    }catch(err){ mic.hidden = true; }
+    mic.addEventListener('click', function(){
+      if(!rec) return;
+      if(listening){ rec.stop(); return; }
+      try{ rec.start(); listening = true; mic.setAttribute('aria-pressed','true'); say('Listening… say “projects”, “skills” or “contact”.', true); }catch(err){}
+    });
+  }
+  doc.addEventListener('keydown', function(e){
+    if(e.key === '/' && doc.activeElement && !/INPUT|TEXTAREA/.test(doc.activeElement.tagName)){ e.preventDefault(); input.focus(); }
+    if(e.key === 'Escape'){ reply.classList.remove('show'); }
+  });
+})();
+</script>
+</body>
+</html>
